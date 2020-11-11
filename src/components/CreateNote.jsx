@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import AddIcon from "@material-ui/icons/Add";
 
-function CreateNote() {
+function CreateNote(props) {
 
     const [inputText, setInputText] = useState({
         title: "",
@@ -11,21 +11,36 @@ function CreateNote() {
     function handleChange(event) {
 
         const {name, value} = event.target;
+
         setInputText(prevValue => {
             return {
                 ...prevValue,
                 [name] : value
-            }
+            };
         });
+        
+    }
+
+    function submitNote(event) {
+        
+        props.addNote(inputText);
+        setInputText({
+            title: "",
+            content: ""
+        });
+        event.preventDefault();
+    
     }
 
     return (
         <div>
             <form className="create-note">
-                <input  onChange={handleChange} type="text" name="title" placeholder="title"/>
-                <textarea  onChange={handleChange} name="content" placeholder="content" rows="3"></textarea>
+                <input  onChange={handleChange} name="title" placeholder="title" value={inputText.title}/>
+                <textarea  onChange={handleChange} name="content" placeholder="content" rows="3" value={inputText.content}></textarea>
                 <button>
-                    <AddIcon />
+                    <AddIcon 
+                        onClick={submitNote}
+                    />
                 </button>
             </form>
         </div>
